@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Generation;
 use App\Entity\Pokemon;
+use App\Entity\Type;
 use PHPUnit\Framework\TestCase;
 
 class PokemonTest extends TestCase
@@ -14,8 +15,8 @@ class PokemonTest extends TestCase
     private CONST IMAGE_URL = 'https://www.pokebip.com/pokedex-images/artworks/1.png';
     private CONST SOUND_URL = 'https://pokemoncries.com/cries-old/1.mp3';
     private CONST GENERATION = 1;
-
-
+    private CONST TYPE_ONE = 'Plante';
+    private CONST TYPE_TWO = 'Poison';
 
     public function testInstance()
     {
@@ -89,6 +90,18 @@ class PokemonTest extends TestCase
             $pokemon->getGeneration()->getNumber(),
             'Expected generation number and the received one are not the same. Expected: '.self::GENERATION.', received: '.$pokemon->getGeneration()->getNumber()
         );
+    }
+
+    public function testType()
+    {
+        $typeOne = $typeTwo = $this->createMock(Type::class);
+        $typeOne->method('getName')->willReturn(self::TYPE_ONE);
+        $typeTwo->method('getName')->willReturn(self::TYPE_TWO);
+        $pokemon = $this->getPokemon();
+        $pokemon->addType($typeOne);
+        $pokemon->addType($typeTwo);
+
+        $this->assertNotEmpty($pokemon->getTypes(), 'The pokemon MUST have at least one type.');
     }
 
     private function getPokemon(): Pokemon

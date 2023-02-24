@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PokemonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +33,10 @@ class Pokemon
 
     #[ORM\ManyToOne(inversedBy: 'pokemon')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Generation $generation = null;
+    private Generation $generation;
+
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'pokemon')]
+    private Collection $types;
 
     public function __construct(
         string $name,
@@ -45,6 +50,7 @@ class Pokemon
         $this->description      = $description;
         $this->imageUrl         = $imageUrl;
         $this->soundUrl         = $soundUrl;
+        $this->types = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,14 +83,38 @@ class Pokemon
         return $this->soundUrl;
     }
 
-    public function getGeneration(): ?Generation
+    public function getGeneration(): Generation
     {
         return $this->generation;
     }
 
-    public function setGeneration(?Generation $generation): self
+    public function setGeneration(Generation $generation): self
     {
         $this->generation = $generation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Type>
+     */
+    public function getTypes(): Collection
+    {
+        return $this->types;
+    }
+
+    public function addType(Type $type): self
+    {
+        if (!$this->types->contains($type)) {
+            $this->types->add($type);
+        }
+
+        return $this;
+    }
+
+    public function removeType(Type $type): self
+    {
+        $this->types->removeElement($type);
 
         return $this;
     }
