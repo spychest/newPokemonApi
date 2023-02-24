@@ -14,7 +14,7 @@ class Generation
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $number = null;
+    private int $number;
 
     public function __construct(int $number)
     {
@@ -26,7 +26,7 @@ class Generation
         return $this->id;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): int
     {
         return $this->number;
     }
