@@ -29,6 +29,10 @@ class Pokemon
     #[ORM\Column(length: 255)]
     private string $soundUrl;
 
+    #[ORM\ManyToOne(inversedBy: 'pokemon')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Generation $generation = null;
+
     public function __construct(
         string $name,
         int $pokedexNumber,
@@ -71,5 +75,17 @@ class Pokemon
     public function getSoundUrl(): string
     {
         return $this->soundUrl;
+    }
+
+    public function getGeneration(): ?Generation
+    {
+        return $this->generation;
+    }
+
+    public function setGeneration(?Generation $generation): self
+    {
+        $this->generation = $generation;
+
+        return $this;
     }
 }

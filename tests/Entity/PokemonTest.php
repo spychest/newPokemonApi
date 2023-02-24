@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Generation;
 use App\Entity\Pokemon;
 use PHPUnit\Framework\TestCase;
 
@@ -12,6 +13,8 @@ class PokemonTest extends TestCase
     private CONST POKEMON_DESCRIPTION = 'Il a une étrange graine plantée sur son dos. Elle grandit avec lui depuis la naissance.';
     private CONST IMAGE_URL = 'https://www.pokebip.com/pokedex-images/artworks/1.png';
     private CONST SOUND_URL = 'https://pokemoncries.com/cries-old/1.mp3';
+    private CONST GENERATION = 1;
+
 
 
     public function testInstance()
@@ -72,6 +75,19 @@ class PokemonTest extends TestCase
         $this->assertEquals(
             self::SOUND_URL, $pokemon->getSoundUrl(),
             "The given sound URL (".self::SOUND_URL.") is not the same when getting pokemon's sound URL: ".$pokemon->getSoundUrl()
+        );
+    }
+
+    public function testGeneration()
+    {
+        $generation = $this->createMock(Generation::class);
+        $generation->method('getNumber')->willReturn(self::GENERATION);
+        $pokemon = $this->getPokemon();
+        $pokemon->setGeneration($generation);
+        $this->assertEquals(
+            self::GENERATION,
+            $pokemon->getGeneration()->getNumber(),
+            'Expected generation number and the received one are not the same. Expected: '.self::GENERATION.', received: '.$pokemon->getGeneration()->getNumber()
         );
     }
 
