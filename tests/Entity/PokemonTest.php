@@ -102,6 +102,8 @@ class PokemonTest extends TestCase
         $pokemon->addType($typeTwo);
 
         $this->assertNotEmpty($pokemon->getTypes(), 'The pokemon MUST have at least one type.');
+        $this->assertTrue(in_array($typeOne, $pokemon->getTypes()->toArray(), 'The first given Type is not in the pokemon\'s types.'));
+        $this->assertTrue(in_array($typeTwo, $pokemon->getTypes()->toArray(), 'The second given Type is not in the pokemon\'s types.'));
     }
 
     private function getPokemon(): Pokemon
